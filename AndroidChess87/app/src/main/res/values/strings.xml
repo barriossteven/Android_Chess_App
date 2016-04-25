@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">AndroidChess87</string>
+    <color name="white">#EEE8AA</color>
+    <color name="black">#BDB76B</color>
+    <color name="ivory">#CDCDC1</color>
+    <string name="currentPlayer">Current Player: </string>
+    <string name="undo">Undo</string>
+    <string name="ai">AI</string>
+    <string name="draw">Draw</string>
+    <string name="resign">Resign</string>
 </resources>
