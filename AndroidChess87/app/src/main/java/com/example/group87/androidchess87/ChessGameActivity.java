@@ -1,12 +1,15 @@
 package com.example.group87.androidchess87;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -19,6 +22,7 @@ public class ChessGameActivity extends AppCompatActivity {
     private Button aiButton;
     private Button drawButton;
     private Button resignButton;
+    private Button recordButton;
     private TextView information;
     private TextView currPlayerText;
     private TextView drawRequestText;
@@ -114,6 +118,7 @@ public class ChessGameActivity extends AppCompatActivity {
         aiButton = (Button) findViewById(R.id.ai);
         drawButton = (Button) findViewById(R.id.draw);
         resignButton = (Button) findViewById(R.id.resign);
+        recordButton = (Button) findViewById(R.id.RecordButton);
 
         information = (TextView) findViewById(R.id.information);
         currPlayerText = (TextView) findViewById(R.id.currentPlayerText);
@@ -129,6 +134,7 @@ public class ChessGameActivity extends AppCompatActivity {
         aiButton.setOnClickListener(new AiButtonClickListener());
         drawButton.setOnClickListener(new DrawButtonClickListener());
         resignButton.setOnClickListener(new ResignButtonClickListener());
+        recordButton.setEnabled(false);
 
         printBoard();
 //        boardButtons[0][0].setBackgroundResource(R.drawable.rookblack);
@@ -192,12 +198,16 @@ public class ChessGameActivity extends AppCompatActivity {
             if(clickActive)
             {
                 storeUndo();
+                //System.out.println("this is input: " + prevClick+ " " +location);
                 currGame.readInput(prevClick+ " " +location);
                 //check if move is legal
                 //deselect all clicks
                 clickActive = false;
                 prevClick = null;
                 printBoard();
+                if(!currGame.validInput){
+                    information.setText("Illegal move, try again");
+                }
                 if(currGame.validInput)
                 {
                     for (int i = 0; i < 8; i++) {
@@ -208,8 +218,12 @@ public class ChessGameActivity extends AppCompatActivity {
                     canUndo = true;
                     information.setText("");
                 }
+                //if(currGame.checkFlag){
+                  //  information.setText("Check");
+                //}
                 if(!currGame.gameIsActive) {
                     information.setText("Checkmate, winner is "+currGame.winner);
+                    recordButton.setEnabled(true);
                 }
             } else {
                 //highlight the click
@@ -350,6 +364,7 @@ public class ChessGameActivity extends AppCompatActivity {
             } else {
                 information.setText("Black resigned, White wins");
             }
+            recordButton.setEnabled(true);
         }
     }
     private void printBoard(){
@@ -420,6 +435,35 @@ public class ChessGameActivity extends AppCompatActivity {
                 undoMoveTemp.board[i][k] = currGame.board.board[i][k];
             }
         }
+
+    }
+
+    public void recordClick(View v)
+    {
+        final Dialog dialog = new Dialog(ChessGameActivity.this);
+        dialog.setTitle("Enter Game Name");
+        dialog.setContentView(R.layout.recordgame_dialog_layout);
+        dialog.show();
+        final EditText gameName = (EditText)dialog.findViewById(R.id.gameName);
+        Button submitButton = (Button)dialog.findViewById(R.id.confirmButton);
+        Button cancelButton = (Button)dialog.findViewById(R.id.cancelButton);
+
+        submitButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //text is the name that the person gave to this game
+                String text = gameName.getText().toString();
+                Toast.makeText(getApplicationContext(),text + " has been recorded", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                dialog.cancel();
+            }
+        });
+
 
     }
 }

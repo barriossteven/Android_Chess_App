@@ -757,4 +757,12 @@
                 android:textSize="8dp"/>
         </TableRow>
     </TableLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record Game"
+        android:id="@+id/RecordButton"
+        android:layout_gravity="center_horizontal"
+        android:onClick="recordClick" />
 </LinearLayout>
