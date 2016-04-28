@@ -19,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
     public void playClick(View v)
     {
         // TODO Auto-generated method stub
+        //send to new chess game
         Intent i = new Intent(getApplicationContext(),ChessGameActivity.class);
         startActivity(i);
 
@@ -26,6 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void playbackClick(View v)
     {
+        //send to list of games
         // TODO Auto-generated method stub
         Intent i = new Intent(getApplicationContext(),PlayBackActivity.class);
         startActivity(i);
