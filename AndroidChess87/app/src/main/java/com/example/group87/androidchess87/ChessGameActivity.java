@@ -1,9 +1,13 @@
 package com.example.group87.androidchess87;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +15,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ChessGameActivity extends AppCompatActivity {
@@ -34,6 +48,10 @@ public class ChessGameActivity extends AppCompatActivity {
     private Board undoMoveTemp = new Board();
     private Piece killedPiece;
     private MoveValidator moveValidator;
+    private char promotionChar = 'Q';
+    Context context;
+    String tmpFile = "temp.dat";
+
 
     /** Called when the activity is first created. */
     @Override
@@ -199,6 +217,7 @@ public class ChessGameActivity extends AppCompatActivity {
             {
                 storeUndo();
                 //System.out.println("this is input: " + prevClick+ " " +location);
+                String move = prevClick+ " " +location;
                 currGame.readInput(prevClick+ " " +location);
                 //check if move is legal
                 //deselect all clicks
@@ -210,6 +229,11 @@ public class ChessGameActivity extends AppCompatActivity {
                 }
                 if(currGame.validInput)
                 {
+                    if(currGame.promoteFlag){
+                        currGame.promoteFlag = false;
+                        promotionDialog();
+
+                    }
                     for (int i = 0; i < 8; i++) {
                         for (int k = 0; k < 8; k++) {
                             undoMove.board[i][k] = undoMoveTemp.board[i][k];
@@ -218,13 +242,15 @@ public class ChessGameActivity extends AppCompatActivity {
                     canUndo = true;
                     information.setText("");
                 }
-                //if(currGame.checkFlag){
-                  //  information.setText("Check");
-                //}
+
+
                 if(!currGame.gameIsActive) {
-                    information.setText("Checkmate, winner is "+currGame.winner);
+                    information.setText("Checkmate, winner is " + currGame.winner);
                     recordButton.setEnabled(true);
+
+
                 }
+
             } else {
                 //highlight the click
                 clickActive = true;
@@ -457,13 +483,89 @@ public class ChessGameActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-        cancelButton.setOnClickListener(new View.OnClickListener(){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+                try {
+                    load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 dialog.cancel();
+
+
             }
         });
 
 
     }
+    public void promotionDialog() {
+        Dialog dialog = onCreateDialogSingleChoice();
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    public Dialog onCreateDialogSingleChoice() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            CharSequence[] array = {"Queen", "Knight", "Rook","Bishop"};
+            builder.setTitle("Select Promotion Piece").setSingleChoiceItems(array, 1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if (which == 0) {
+                        promotionChar = 'q';
+                        currGame.promote(promotionChar);
+                        printBoard();
+                    } else if (which == 1) {
+                        promotionChar = 'n';
+                        currGame.promote(promotionChar);
+                        printBoard();
+                    } else if (which ==2) {
+                        promotionChar = 'r';
+                        currGame.promote(promotionChar);
+                        printBoard();
+                    }else if(which ==3){
+                        promotionChar = 'b';
+                        currGame.promote(promotionChar);
+                        printBoard();
+                    }
+
+                }
+            })
+
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+            return builder.create();
+        }
+
+    public void store(String move) throws IOException, FileNotFoundException {
+        // TO BE FILLED IN
+
+       FileOutputStream fos = openFileOutput(tmpFile,MODE_APPEND);
+        fos.write(move.getBytes());
+        fos.close();
+    }
+    public void load() throws IOException {
+        String Message;
+        FileInputStream fis = openFileInput(tmpFile);
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuffer sb = new StringBuffer();
+        while((Message = bufferedReader.readLine())!= null){
+            sb.append(Message + "\n");
+        }
+        System.out.println(sb);
+
+
+
+    }
+
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.group87.androidchess87;
 
+import android.app.Dialog;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -42,6 +44,7 @@ public class ChessGame {
     static Board board = new Board();
     /**
      * currently asking for draw
+     * currently asking for draw
      */
     static Boolean askforDraw = false;
 
@@ -49,6 +52,10 @@ public class ChessGame {
     static Boolean checkmateFlag = false;
     static String winner;
     static Boolean gameOver;
+    static int promoteRank;
+    static int promoteFile;
+    static Boolean promoteFlag = false;
+
 
     public ChessGame(){
 
@@ -211,10 +218,13 @@ public class ChessGame {
         if((yourPiece.color.equals("white")&& whiteTurn)||(yourPiece.color.equals("black")&&!whiteTurn)) {
             Boolean movevalidity = yourPiece.validMove(oldRank, oldFile, newRank, newFile, board);
             if(movevalidity && ((yourPiece instanceof Pawn)&&((oldRank==6&&newRank==7)||(oldRank==1 && newRank==0))) ){
-                System.out.println("pawn to be promoted to: " + promotionChar );
+                System.out.println("pawn to be promoted to: " + promotionChar);
                 board.board[newRank][newFile] =  pawnPromotion(promotionChar);
+                promoteRank = newRank;
+                promoteFile = newFile;
                 board.board[oldRank][oldFile] = null;
                 removeEnPassant();
+                promoteFlag = true;
                 return true;
             }else if(movevalidity){
                 board.board[newRank][newFile] =  board.board[oldRank][oldFile];
@@ -254,6 +264,7 @@ public class ChessGame {
         }
         return false;
     }
+
     /**
      * Removes en Passant flags in each pawn after 1 turn indicating those pieces are no longer in en Passant.
      */
@@ -287,9 +298,9 @@ public class ChessGame {
     public static Piece pawnPromotion(char promotionChar){
         String color;
         if(whiteTurn){
-            color = "white";
-        } else{
             color = "black";
+        } else{
+            color = "white";
         }
         if(promotionChar == 'q'){
             return new Queen(color);
@@ -302,6 +313,10 @@ public class ChessGame {
         }
 
         return null;
+    }
+    public void promote(char c){
+        board.board[promoteRank][promoteFile] =  pawnPromotion(c);
+        System.out.print(board.board[promoteRank][promoteFile].pieceSymbol);
     }
 
 
