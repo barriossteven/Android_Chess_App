@@ -504,12 +504,17 @@ public class ChessGameActivity extends AppCompatActivity {
         Dialog dialog = onCreateDialogSingleChoice();
         dialog.setCancelable(false);
         dialog.show();
+
     }
 
     public Dialog onCreateDialogSingleChoice() {
+        promotionChar = 'q';
+        currGame.promote(promotionChar);
+        printBoard();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             CharSequence[] array = {"Queen", "Knight", "Rook","Bishop"};
-            builder.setTitle("Select Promotion Piece").setSingleChoiceItems(array, 1, new DialogInterface.OnClickListener() {
+            builder.setTitle("Select Promotion Piece").setSingleChoiceItems(array, 0, new DialogInterface.OnClickListener() {
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
