@@ -164,6 +164,8 @@ public class ChessGameActivity extends AppCompatActivity {
 
     }
 
+
+
     private void startNewGame()
     {
 //        currGame.clearBoard();
@@ -257,6 +259,7 @@ public class ChessGameActivity extends AppCompatActivity {
                 if(!currGame.gameIsActive) {
                     information.setText("Checkmate, winner is " + currGame.winner);
                     recordButton.setEnabled(true);
+                    printBoard();
 
                 }
 
@@ -514,6 +517,7 @@ public class ChessGameActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public Boolean createRecord(String record) throws IOException {
         //doesnt check for duplicate file yet
