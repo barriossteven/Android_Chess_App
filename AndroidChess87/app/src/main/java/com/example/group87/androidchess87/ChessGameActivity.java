@@ -48,9 +48,13 @@ public class ChessGameActivity extends AppCompatActivity {
     private Board undoMoveTemp = new Board();
     private Piece killedPiece;
     private MoveValidator moveValidator;
-    private char promotionChar = 'Q';
+    private char promotionChar = 'q';
     Context context;
-    String tmpFile = "temp.dat";
+    private Boolean wasJustPromoted = false;
+    String tmpFile = "temp.txt";
+    String FILENAME = "temp.txt";
+    Boolean firstTime = true;
+
 
 
     /** Called when the activity is first created. */
@@ -232,7 +236,13 @@ public class ChessGameActivity extends AppCompatActivity {
                     if(currGame.promoteFlag){
                         currGame.promoteFlag = false;
                         promotionDialog();
+                        wasJustPromoted = true;
 
+                    }
+                    try {
+                        storeLine(move);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                     for (int i = 0; i < 8; i++) {
                         for (int k = 0; k < 8; k++) {
@@ -247,7 +257,6 @@ public class ChessGameActivity extends AppCompatActivity {
                 if(!currGame.gameIsActive) {
                     information.setText("Checkmate, winner is " + currGame.winner);
                     recordButton.setEnabled(true);
-
 
                 }
 
@@ -479,27 +488,52 @@ public class ChessGameActivity extends AppCompatActivity {
             public void onClick(View v){
                 //text is the name that the person gave to this game
                 String text = gameName.getText().toString();
-                Toast.makeText(getApplicationContext(),text + " has been recorded", Toast.LENGTH_SHORT).show();
+                text= text.trim() + ".txt";
+
+
+                try {
+                    if(createRecord(text)){
+                        Toast.makeText(getApplicationContext(),text + " has been recorded", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(),text + " has NOT been recorded", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),text + " has NOT been recorded", Toast.LENGTH_SHORT).show();
+                }
+
                 dialog.cancel();
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 dialog.cancel();
 
 
             }
         });
+    }
 
+    public Boolean createRecord(String record) throws IOException {
+        //doesnt check for duplicate file yet
+        FileOutputStream fos = openFileOutput(record, Context.MODE_PRIVATE);
+        FileInputStream fis = openFileInput(FILENAME);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+        PrintWriter pw = new PrintWriter(fos);
+        String move;
+
+        while( (move = br.readLine())!= null ){
+            pw.println(move);
+        }
+        pw.close();
+        fos.close();
+        fis.close();
+        return true;
 
     }
+
+
     public void promotionDialog() {
         Dialog dialog = onCreateDialogSingleChoice();
         dialog.setCancelable(false);
@@ -549,12 +583,28 @@ public class ChessGameActivity extends AppCompatActivity {
             return builder.create();
         }
 
-    public void store(String move) throws IOException, FileNotFoundException {
-        // TO BE FILLED IN
 
-       FileOutputStream fos = openFileOutput(tmpFile,MODE_APPEND);
-        fos.write(move.getBytes());
+
+    public void unwriteUndo(){}
+    public void storeLine(String move) throws IOException {
+        if(wasJustPromoted){
+            move = move + " " + promotionChar;
+            wasJustPromoted = false;
+        }
+        FileOutputStream fos = null;
+        if(firstTime){
+            fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            firstTime = false;
+        }else{
+            fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+        }
+        PrintWriter pw = new PrintWriter(fos);
+        pw.println(move);
+        pw.close();
         fos.close();
+    }
+    public void store() throws IOException {
+        // TO BE FILLED IN
     }
     public void load() throws IOException {
         String Message;
