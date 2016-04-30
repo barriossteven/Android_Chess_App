@@ -603,23 +603,7 @@ public class ChessGameActivity extends AppCompatActivity {
         pw.close();
         fos.close();
     }
-    public void store() throws IOException {
-        // TO BE FILLED IN
-    }
-    public void load() throws IOException {
-        String Message;
-        FileInputStream fis = openFileInput(tmpFile);
-        InputStreamReader isr = new InputStreamReader(fis);
-        BufferedReader bufferedReader = new BufferedReader(isr);
-        StringBuffer sb = new StringBuffer();
-        while((Message = bufferedReader.readLine())!= null){
-            sb.append(Message + "\n");
-        }
-        System.out.println(sb);
 
-
-
-    }
 
 
 
