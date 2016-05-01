@@ -1,7 +1,11 @@
 package com.example.group87.androidchess87;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -21,6 +25,7 @@ public class PlayBackActivity extends AppCompatActivity {
 
     private ArrayList<String> filesList;
     private ListView listView;
+    public static final String game_name = "game_name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,18 @@ public class PlayBackActivity extends AppCompatActivity {
                         R.layout.name_layout,
                         filesList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView,
+                                            View view,
+                                            int i,
+                                            long l) {
+                        playGame(i);
+                    }
+                });
+
 
     }
 
@@ -53,6 +70,15 @@ public class PlayBackActivity extends AppCompatActivity {
             System.out.println(i);
         }
         return files;
+    }
+
+
+    private void playGame(int pos) {
+        Bundle bundle = new Bundle();
+        bundle.putString(game_name, filesList.get(pos));
+        Intent intent = new Intent(this, playBackChessGameActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 

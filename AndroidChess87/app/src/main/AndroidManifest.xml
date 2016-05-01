@@ -15,8 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChessGameActivity"></activity>
-        <activity android:name=".PlayBackActivity"></activity>
+        <activity android:name=".ChessGameActivity" />
+        <activity android:name=".PlayBackActivity" />
+        <activity android:name=".playBackChessGameActivity"></activity>
     </application>
 
 </manifest>
