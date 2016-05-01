@@ -1,18 +1,742 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.group87.androidchess87.playBackChessGameActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"
         android:id="@+id/textView2"
-        android:layout_alignParentTop="true" />
-</RelativeLayout>
+        android:layout_gravity="center_horizontal"
+        android:textSize="30dp" />
+
+    <TableLayout
+        android:id="@+id/playArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/ivory">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <ImageButton
+                android:id="@+id/a8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/b8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="1"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/c8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                />
+
+            <ImageButton
+                android:id="@+id/d8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="3"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/e8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="4"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/f8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="5"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/g8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="6"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/h8"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="7"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <ImageButton
+                android:id="@+id/a7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/b7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="1"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/c7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/d7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="3"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/e7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="4"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/f7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="5"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/g7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="6"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/h7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="7"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <ImageButton
+                android:id="@+id/a6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/b6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="1"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/c6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/d6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="3"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/e6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="4"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/f6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="5"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/g6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="6"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/h6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="7"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+        </TableRow><TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <ImageButton
+            android:id="@+id/a5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="0"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/b5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="1"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/c5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="2"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/d5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="3"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/e5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="4"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/f5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="5"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/g5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="6"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/h5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="7"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+    </TableRow><TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <ImageButton
+            android:id="@+id/a4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="0"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/b4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="1"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/c4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="2"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/d4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="3"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/e4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="4"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/f4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="5"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/g4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="6"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/h4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="7"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+    </TableRow><TableRow
+        android:id="@+id/tableRow6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <ImageButton
+            android:id="@+id/a3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="0"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/b3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="1"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/c3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="2"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/d3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="3"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/e3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="4"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/f3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="5"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/g3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="6"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+        <ImageButton
+            android:id="@+id/h3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_column="7"
+            android:background="@color/white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"/>
+
+    </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <ImageButton
+                android:id="@+id/a2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/b2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="1"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/c2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/d2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="3"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/e2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="4"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/f2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="5"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/g2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="6"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/h2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="7"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <ImageButton
+                android:id="@+id/a1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/b1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="1"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/c1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/d1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="3"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/e1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="4"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/f1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="5"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/g1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="6"
+                android:background="@color/black"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:id="@+id/h1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="7"
+                android:background="@color/white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
+
+        </TableRow>
+
+
+
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:textSize="25dp" />
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textSize="25dp">
+
+            <TextView
+                android:id="@+id/currentPlayerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/currentPlayer"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/currentPlayerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/ties"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/tiesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:id="@+id/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/androidCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textSize="25dp">
+
+            <TextView
+                android:id="@+id/drawRequestText"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_column="1"/>
+
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Move"
+        android:id="@+id/nextButton"
+        android:layout_gravity="center_horizontal"
+        android:onClick="recordClick" />
+
+</LinearLayout>
