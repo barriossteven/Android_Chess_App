@@ -63,7 +63,13 @@ public class PlayBackActivity extends AppCompatActivity {
         ArrayList<String> files = new ArrayList<String>();
         for(int i = 0; i < file.length; i++){
             System.out.println("this is file: " + file[i]);
-            files.add(file[i].getName());
+            if(file[i].getName().equals("tempplacement.txt") || file[i].getName().equals("tempdonotshow.txt") || file[i].getName().equals("instant-run") )
+            {
+
+            }
+            else {
+                files.add(file[i].getName());
+            }
         }
         Collections.sort(files);
         for(String i: files){

@@ -1,5 +1,6 @@
 package com.example.group87.androidchess87;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -11,6 +12,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Random;
 
 public class playBackChessGameActivity extends AppCompatActivity {
@@ -21,7 +28,7 @@ public class playBackChessGameActivity extends AppCompatActivity {
     private Button undoButton;
     private Button aiButton;
     private Button drawButton;
-    private Button resignButton;
+    private Button nextMoveButton;
     private TextView information;
     private TextView currPlayerText;
     private TextView drawRequestText;
@@ -34,9 +41,12 @@ public class playBackChessGameActivity extends AppCompatActivity {
     private Piece killedPiece;
     private MoveValidator moveValidator;
     private String gameLog = "";
+    private String FILENAME = "tempplacement.txt";
+    FileInputStream fis;
+    BufferedReader br;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_back_chess_game);
         Bundle bundle = getIntent().getExtras();
@@ -119,31 +129,23 @@ public class playBackChessGameActivity extends AppCompatActivity {
         boardButtons[6][7] = (ImageButton) findViewById(R.id.g1);
         boardButtons[7][7] = (ImageButton) findViewById(R.id.h1);
 
-        undoButton = (Button) findViewById(R.id.undo);
-        aiButton = (Button) findViewById(R.id.ai);
-        drawButton = (Button) findViewById(R.id.draw);
-        resignButton = (Button) findViewById(R.id.resign);
-
-        information = (TextView) findViewById(R.id.information);
-        currPlayerText = (TextView) findViewById(R.id.currentPlayerText);
-        drawRequestText = (TextView) findViewById(R.id.drawRequestText);
 
         currGame = new ChessGame();
         moveValidator = new MoveValidator();
         currPlayer = "white";
 
 
-        undoButton.setEnabled(true);
-        undoButton.setOnClickListener(new UndoButtonClickListener());
-        aiButton.setOnClickListener(new AiButtonClickListener());
-        drawButton.setOnClickListener(new DrawButtonClickListener());
-        resignButton.setOnClickListener(new ResignButtonClickListener());
-
+        information = (TextView) findViewById(R.id.information);
+        nextMoveButton = (Button) findViewById(R.id.nextButton);
+        nextMoveButton.setOnClickListener(new nextMoveButtonClickListener());
+        try {
+            createScanner();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         printBoard();
 //        boardButtons[0][0].setBackgroundResource(R.drawable.rookblack);
         startNewGame();
-
-
 
     }
 
@@ -185,11 +187,11 @@ public class playBackChessGameActivity extends AppCompatActivity {
                     }
 //                boardButtons[i][j].setText("");
                     boardButtons[i][j].setEnabled(true);
-                    boardButtons[i][j].setOnClickListener(new ButtonClickListener(location));
+                    //boardButtons[i][j].setOnClickListener(new ButtonClickListener(location));
                 }
             }
 
-            currPlayerText.setText("White");
+//            currPlayerText.setText("White");
         }
 
         private class ButtonClickListener implements View.OnClickListener
@@ -233,145 +235,14 @@ public class playBackChessGameActivity extends AppCompatActivity {
             }
         }
 
-        private class UndoButtonClickListener implements View.OnClickListener {
-            public void onClick(View view) {
-                System.out.println("undo");
-                if(canUndo) {
-                    //delete previous line in the logfile
-                    if(currGame.whiteTurn){
-                        currGame.whiteTurn = false;
-                    }else{
-                        currGame.whiteTurn = true;
-                    }
-                    for (int i = 0; i < 8; i++) {
-                        for (int k = 0; k < 8; k++) {
-                            currGame.board.board[i][k] = undoMove.board[i][k];
-                            printBoard();
-                        }
-                    }
-                    canUndo = false;
-                    information.setText("Undo'd");
-                } else {
-                    information.setText("Cannot undo more than once");
-                }
-            }
-        }
-        private class AiButtonClickListener implements View.OnClickListener {
-            public void onClick(View view) {
-                Random rand = new Random();
-                do{
-                    int n = rand.nextInt(8);
-                    String curr = "";
-                    switch (n) {
-                        case 0:
-                            curr = "a" + rand.nextInt(8);
-                            break;
-                        case 1:
-                            curr = "b" + rand.nextInt(8);
-                            break;
-                        case 2:
-                            curr = "c" + rand.nextInt(8);
-                            break;
-                        case 3:
-                            curr = "d" + rand.nextInt(8);
-                            break;
-                        case 4:
-                            curr = "e" + rand.nextInt(8);
-                            break;
-                        case 5:
-                            curr = "f" + rand.nextInt(8);
-                            break;
-                        case 6:
-                            curr = "g" + rand.nextInt(8);
-                            break;
-                        case 7:
-                            curr = "h" + rand.nextInt(8);
-                            break;
-                    }
-
-                    n = rand.nextInt(8);
-                    String dest = "";
-                    switch (n) {
-                        case 0:
-                            dest = "a" + rand.nextInt(8);
-                            break;
-                        case 1:
-                            dest = "b" + rand.nextInt(8);
-                            break;
-                        case 2:
-                            dest = "c" + rand.nextInt(8);
-                            break;
-                        case 3:
-                            dest = "d" + rand.nextInt(8);
-                            break;
-                        case 4:
-                            dest = "e" + rand.nextInt(8);
-                            break;
-                        case 5:
-                            dest = "f" + rand.nextInt(8);
-                            break;
-                        case 6:
-                            dest = "g" + rand.nextInt(8);
-                            break;
-                        case 7:
-                            dest = "h" + rand.nextInt(8);
-                            break;
-                    }
-                    String move = curr + " " + dest;
-                    storeUndo();
-                    currGame.readInput(move);
-                }while(!currGame.validInput);
-                for (int i = 0; i < 8; i++) {
-                    for (int k = 0; k < 8; k++) {
-                        undoMove.board[i][k] = undoMoveTemp.board[i][k];
-                    }
-                }
-                canUndo = true;
-                information.setText("AI move");
-
-                printBoard();
-            }
-        }
-        private class DrawButtonClickListener implements View.OnClickListener {
-            public void onClick(View view) {
-                if(!drawRequest) {
-                    if(currGame.whiteTurn) {
-                        information.setText("White offers draw");
-                    } else {
-                        information.setText("Black offers draw");
-                    }
-                    drawRequest = true;
-                }
-                else {
-
-                    if(currGame.whiteTurn) {
-                        information.setText("White accepts draw");
-                    } else {
-                        information.setText("Black accepts draw");
-                    }
-                    drawRequest = false;
-                    currGame.gameIsActive = false;
-                }
-            }
-        }
-        private class ResignButtonClickListener implements View.OnClickListener {
-            public void onClick(View view) {
-                currGame.readInput("resign");
-                if(currGame.whiteTurn) {
-                    information.setText("White resigned, Black wins");
-                } else {
-                    information.setText("Black resigned, White wins");
-                }
-            }
-        }
         private void printBoard(){
             if(currGame.checkFlag){
                 //print check
             }
             if(currGame.whiteTurn) {
-                currPlayerText.setText(" White");
+                information.setText("Current Move: White");
             } else {
-                currPlayerText.setText(" Black");
+                information.setText("Current Move: Black");
             }
             for (int i = 0; i < 8; i++) {
                 for (int k = 0; k < 8; k++) {
@@ -435,6 +306,37 @@ public class playBackChessGameActivity extends AppCompatActivity {
 
         }
 
+    public Boolean createScanner() throws IOException {
+        //doesnt check for duplicate file yet
+        fis = openFileInput(gameName);
+        br = new BufferedReader(new InputStreamReader(fis));
+        return true;
+
+    }
+
+    private class nextMoveButtonClickListener implements View.OnClickListener {
+        public void onClick(View view) {
+            try {
+                recordClick();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void recordClick() throws  IOException{
+        String move;
+        if((move = br.readLine()) != null ) {
+            currGame.readInput(move);
+            printBoard();
+            if(!currGame.gameIsActive) {
+                information.setText("Checkmate, winner is "+currGame.winner);
+            }
+        }
+        else {
+            fis.close();
+        }
+    }
 
 
 

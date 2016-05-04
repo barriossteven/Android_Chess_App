@@ -52,7 +52,7 @@ public class ChessGameActivity extends AppCompatActivity {
     Context context;
     private Boolean wasJustPromoted = false;
     String tmpFile = "temp.txt";
-    String FILENAME = "temp.txt";
+    String FILENAME = "tempdonotshow.txt";
     Boolean firstTime = true;
 
 
