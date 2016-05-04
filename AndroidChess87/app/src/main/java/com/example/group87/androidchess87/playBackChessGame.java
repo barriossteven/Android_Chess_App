@@ -1,31 +1,76 @@
 package com.example.group87.androidchess87;
 
+import android.app.Dialog;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+//import controller.MoveValidator;
+//import model.Bishop;
+//import model.Board;
+//import model.Knight;
+//import model.Pawn;
+//import model.Piece;
+//import model.Queen;
+//import model.Rook;
 /**
- * Created by bcall on 4/30/2016.
+ * Created by dannychoi on 4/24/2016.
  */
 public class playBackChessGame {
 
+    /**
+     * current input is valid
+     */
     static Boolean validInput = true;
-
+    /**
+     * default promotion character is q for queen
+     */
     static char promotionChar = 'q';
-
+    /**
+     * current game is active
+     */
     static Boolean gameIsActive = true;
-
+    /**
+     * white's turn
+     */
     static Boolean whiteTurn = true;
-
+    /**
+     * asking for draw
+     */
     static Boolean askingDraw= false;
-
+    /**
+     * creates new Board instance
+     */
     static Board board = new Board();
-
+    /**
+     * currently asking for draw
+     * currently asking for draw
+     */
     static Boolean askforDraw = false;
 
     static Boolean checkFlag = false;
     static Boolean checkmateFlag = false;
     static String winner;
     static Boolean gameOver;
+    static int promoteRank;
+    static int promoteFile;
+    static Boolean promoteFlag = false;
+
 
     public playBackChessGame(){
 
+    }
+    public static void restartGame(){
+        validInput = true;
+        promotionChar = 'q';
+        gameIsActive = true;
+        whiteTurn = true;
+        askingDraw= false;
+        board = new Board();
+        askforDraw = false;
+        checkFlag = false;
+        checkmateFlag = false;
+        promoteFlag = false;
     }
     /**
      * Parses the input and checks if it is valid input/move
@@ -185,10 +230,13 @@ public class playBackChessGame {
         if((yourPiece.color.equals("white")&& whiteTurn)||(yourPiece.color.equals("black")&&!whiteTurn)) {
             Boolean movevalidity = yourPiece.validMove(oldRank, oldFile, newRank, newFile, board);
             if(movevalidity && ((yourPiece instanceof Pawn)&&((oldRank==6&&newRank==7)||(oldRank==1 && newRank==0))) ){
-                System.out.println("pawn to be promoted to: " + promotionChar );
+                System.out.println("pawn to be promoted to: " + promotionChar);
                 board.board[newRank][newFile] =  pawnPromotion(promotionChar);
+                promoteRank = newRank;
+                promoteFile = newFile;
                 board.board[oldRank][oldFile] = null;
                 removeEnPassant();
+                promoteFlag = true;
                 return true;
             }else if(movevalidity){
                 board.board[newRank][newFile] =  board.board[oldRank][oldFile];
@@ -228,6 +276,7 @@ public class playBackChessGame {
         }
         return false;
     }
+
     /**
      * Removes en Passant flags in each pawn after 1 turn indicating those pieces are no longer in en Passant.
      */
@@ -277,10 +326,11 @@ public class playBackChessGame {
 
         return null;
     }
-
-
-
-
+    static public void promote(char c){
+        System.out.println("IN PROMOTEEEEE");
+        board.board[promoteRank][promoteFile] =  pawnPromotion(c);
+        System.out.println(board.board[promoteRank][promoteFile].pieceSymbol);
+    }
 
 
 }

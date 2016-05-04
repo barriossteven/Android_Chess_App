@@ -60,6 +60,18 @@ public class ChessGame {
     public ChessGame(){
 
     }
+    public static void restartGame(){
+       validInput = true;
+        promotionChar = 'q';
+        gameIsActive = true;
+       whiteTurn = true;
+       askingDraw= false;
+       board = new Board();
+        askforDraw = false;
+        checkFlag = false;
+        checkmateFlag = false;
+       promoteFlag = false;
+    }
     /**
      * Parses the input and checks if it is valid input/move
      *
@@ -314,9 +326,10 @@ public class ChessGame {
 
         return null;
     }
-    public void promote(char c){
+    static public void promote(char c){
+        System.out.println("IN PROMOTEEEEE");
         board.board[promoteRank][promoteFile] =  pawnPromotion(c);
-        System.out.print(board.board[promoteRank][promoteFile].pieceSymbol);
+        System.out.println(board.board[promoteRank][promoteFile].pieceSymbol);
     }
 
 

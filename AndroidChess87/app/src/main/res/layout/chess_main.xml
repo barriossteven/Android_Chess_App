@@ -754,7 +754,9 @@
                 android:layout_column="8"
                 android:background="@color/black"
                 android:text="@string/resign"
-                android:textSize="8dp"/>
+                android:textSize="8dp"
+                android:nestedScrollingEnabled="false"
+                android:onClick="resignClick" />
         </TableRow>
     </TableLayout>
 
@@ -765,4 +767,12 @@
         android:id="@+id/RecordButton"
         android:layout_gravity="center_horizontal"
         android:onClick="recordClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="new game"
+        android:id="@+id/newButton"
+        android:layout_gravity="center_horizontal"
+        android:onClick="newClick" />
 </LinearLayout>

@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class playBackChessGameActivity extends AppCompatActivity {
     private String gameName;
-    ChessGame currGame;
+    playBackChessGame currGame;
     private ImageButton boardButtons[][]; /* [x][y] */
     private String currPlayer;
     private Button undoButton;
@@ -41,9 +41,12 @@ public class playBackChessGameActivity extends AppCompatActivity {
     private Piece killedPiece;
     private MoveValidator moveValidator;
     private String gameLog = "";
+    private char promotionChar = 'q';
     private String FILENAME = "tempplacement.txt";
     FileInputStream fis;
     BufferedReader br;
+    private Boolean wasJustPromoted = false;
+    private Boolean firstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -51,7 +54,6 @@ public class playBackChessGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_back_chess_game);
         Bundle bundle = getIntent().getExtras();
         gameName = bundle.getString(PlayBackActivity.game_name);
-        System.out.println("THIS IS SELECTED TEXT");
         TextView gameNameView = (TextView)findViewById(R.id.textView2);
         gameNameView.setText(gameName);
 
@@ -130,7 +132,7 @@ public class playBackChessGameActivity extends AppCompatActivity {
         boardButtons[7][7] = (ImageButton) findViewById(R.id.h1);
 
 
-        currGame = new ChessGame();
+        currGame = new playBackChessGame();
         moveValidator = new MoveValidator();
         currPlayer = "white";
 
@@ -143,15 +145,28 @@ public class playBackChessGameActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        printBoard();
 //        boardButtons[0][0].setBackgroundResource(R.drawable.rookblack);
         startNewGame();
+        printBoard();
 
     }
 
+    public void recreateGame(){
 
+        currGame.restartGame();
+        clickActive = false;
+        canUndo = false;
+        drawRequest = false;
+        undoMove = new Board();
+        undoMoveTemp = new Board();
+        promotionChar = 'q';
+        wasJustPromoted = false;
+        firstTime = true;
+        information.setText("");
+    }
         private void startNewGame()
         {
+            recreateGame();
 //        currGame.clearBoard();
 
             for (int i = 0; i < 8; i++)

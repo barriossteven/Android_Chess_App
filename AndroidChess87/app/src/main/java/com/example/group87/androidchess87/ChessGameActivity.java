@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class ChessGameActivity extends AppCompatActivity {
     private Board undoMoveTemp = new Board();
     private Piece killedPiece;
     private MoveValidator moveValidator;
-    private char promotionChar = 'q';
+    public char promotionChar = 'q';
     Context context;
     private Boolean wasJustPromoted = false;
     String tmpFile = "temp.txt";
@@ -146,28 +147,32 @@ public class ChessGameActivity extends AppCompatActivity {
         currPlayerText = (TextView) findViewById(R.id.currentPlayerText);
         drawRequestText = (TextView) findViewById(R.id.drawRequestText);
 
-        currGame = new ChessGame();
-        moveValidator = new MoveValidator();
-        currPlayer = "white";
 
-
-        undoButton.setEnabled(true);
-        undoButton.setOnClickListener(new UndoButtonClickListener());
-        aiButton.setOnClickListener(new AiButtonClickListener());
-        drawButton.setOnClickListener(new DrawButtonClickListener());
-        resignButton.setOnClickListener(new ResignButtonClickListener());
-        recordButton.setEnabled(false);
-
-        printBoard();
 //        boardButtons[0][0].setBackgroundResource(R.drawable.rookblack);
         startNewGame();
 
+
     }
 
+    public void recreateGame(){
 
+       currGame.restartGame();
+        clickActive = false;
+        canUndo = false;
+        drawRequest = false;
+        undoMove = new Board();
+        undoMoveTemp = new Board();
+        wasJustPromoted = false;
+        firstTime = true;
+        recordButton.setEnabled(false);
+        information.setText("");
+    }
 
     private void startNewGame()
     {
+       recreateGame();
+        printBoard();
+
 //        currGame.clearBoard();
 
         for (int i = 0; i < 8; i++)
@@ -202,6 +207,7 @@ public class ChessGameActivity extends AppCompatActivity {
                         break;
                 }
 //                boardButtons[i][j].setText("");
+
                 boardButtons[i][j].setEnabled(true);
                 boardButtons[i][j].setOnClickListener(new ButtonClickListener(location));
             }
@@ -209,6 +215,7 @@ public class ChessGameActivity extends AppCompatActivity {
 
         currPlayerText.setText("White");
     }
+
 
     private class ButtonClickListener implements View.OnClickListener
     {
@@ -237,15 +244,21 @@ public class ChessGameActivity extends AppCompatActivity {
                 {
                     if(currGame.promoteFlag){
                         currGame.promoteFlag = false;
-                        promotionDialog();
-                        wasJustPromoted = true;
+                        System.out.println("BEFORE DIALOG");
+                        promotionDialog(move);
+                        //wasJustPromoted = true;
 
+
+
+                    }else{
+                        try {
+                            System.out.println("this is move: " + move);
+                            storeLine(move);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    try {
-                        storeLine(move);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
                     for (int i = 0; i < 8; i++) {
                         for (int k = 0; k < 8; k++) {
                             undoMove.board[i][k] = undoMoveTemp.board[i][k];
@@ -260,7 +273,6 @@ public class ChessGameActivity extends AppCompatActivity {
                     information.setText("Checkmate, winner is " + currGame.winner);
                     recordButton.setEnabled(true);
                     printBoard();
-
                 }
 
             } else {
@@ -394,7 +406,7 @@ public class ChessGameActivity extends AppCompatActivity {
             }
         }
     }
-    private class ResignButtonClickListener implements View.OnClickListener {
+   /*private class ResignButtonClickListener implements View.OnClickListener {
         public void onClick(View view) {
             currGame.readInput("resign");
             if(currGame.whiteTurn) {
@@ -404,7 +416,23 @@ public class ChessGameActivity extends AppCompatActivity {
             }
             recordButton.setEnabled(true);
         }
+    }*/
+    public void resignClick(View view) {
+        currGame.readInput("resign");
+        try {
+            storeLine("resign");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(currGame.whiteTurn) {
+            information.setText("White resigned, Black wins");
+        } else {
+            information.setText("Black resigned, White wins");
+        }
+        recordButton.setEnabled(true);
     }
+
+
     private void printBoard(){
         if(currGame.checkFlag){
             //print check
@@ -537,8 +565,10 @@ public class ChessGameActivity extends AppCompatActivity {
 
     }
 
-
-    public void promotionDialog() {
+    String globalMove;
+    char globalChar;
+    public void promotionDialog(String move) {
+        globalMove = move;
         Dialog dialog = onCreateDialogSingleChoice();
         dialog.setCancelable(false);
         dialog.show();
@@ -546,8 +576,10 @@ public class ChessGameActivity extends AppCompatActivity {
     }
 
     public Dialog onCreateDialogSingleChoice() {
-        promotionChar = 'q';
-        currGame.promote(promotionChar);
+        System.out.println("IN DIALOG");
+        //promotionChar = 'q';
+        //System.out.println(promotionChar);
+        //currGame.promote(promotionChar);
         printBoard();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             CharSequence[] array = {"Queen", "Knight", "Rook","Bishop"};
@@ -558,19 +590,27 @@ public class ChessGameActivity extends AppCompatActivity {
 
                     if (which == 0) {
                         promotionChar = 'q';
+                        globalChar = promotionChar;
                         currGame.promote(promotionChar);
+                        System.out.println(promotionChar);
                         printBoard();
                     } else if (which == 1) {
                         promotionChar = 'n';
+                        globalChar = promotionChar;
                         currGame.promote(promotionChar);
+                        System.out.println(promotionChar);
                         printBoard();
                     } else if (which ==2) {
                         promotionChar = 'r';
+                        globalChar = promotionChar;
                         currGame.promote(promotionChar);
+                        System.out.println(promotionChar);
                         printBoard();
                     }else if(which ==3){
                         promotionChar = 'b';
+                        globalChar = promotionChar;
                         currGame.promote(promotionChar);
+                        System.out.println(promotionChar);
                         printBoard();
                     }
 
@@ -580,7 +620,13 @@ public class ChessGameActivity extends AppCompatActivity {
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-
+                            globalMove = globalMove+ " " + globalChar;
+                            System.out.println("this is globalmove: " + globalMove);
+                            try {
+                                storeLine(globalMove);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -591,10 +637,11 @@ public class ChessGameActivity extends AppCompatActivity {
 
     public void unwriteUndo(){}
     public void storeLine(String move) throws IOException {
-        if(wasJustPromoted){
-            move = move + " " + promotionChar;
-            wasJustPromoted = false;
-        }
+        //if(wasJustPromoted){
+          //  System.out.println("promotion character is: " + promotionChar);
+           // move = move + " " + promotionChar;
+            //wasJustPromoted = false;
+       // }
         FileOutputStream fos = null;
         if(firstTime){
             fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
@@ -608,6 +655,16 @@ public class ChessGameActivity extends AppCompatActivity {
         fos.close();
     }
 
+    public void newClick(View v){
+        Intent i = new Intent(this, ChessGameActivity.class); //change it to your main class
+        //the following 2 tags are for clearing the backStack and start fresh
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+        startActivity(i);
+
+
+    }
 
 
 
