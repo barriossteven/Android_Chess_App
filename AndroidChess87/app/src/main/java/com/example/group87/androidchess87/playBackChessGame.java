@@ -39,6 +39,7 @@ public class playBackChessGame {
      */
     static Boolean askingDraw= false;
     /**
+    /**
      * creates new Board instance
      */
     static Board board = new Board();
@@ -47,6 +48,7 @@ public class playBackChessGame {
      * currently asking for draw
      */
     static Boolean askforDraw = false;
+    static Boolean acceptDraw = false;
 
     static Boolean checkFlag = false;
     static Boolean checkmateFlag = false;
@@ -55,6 +57,7 @@ public class playBackChessGame {
     static int promoteRank;
     static int promoteFile;
     static Boolean promoteFlag = false;
+
 
 
     public playBackChessGame(){
@@ -71,6 +74,7 @@ public class playBackChessGame {
         checkFlag = false;
         checkmateFlag = false;
         promoteFlag = false;
+        acceptDraw = false;
     }
     /**
      * Parses the input and checks if it is valid input/move
@@ -99,6 +103,7 @@ public class playBackChessGame {
         }
         if(s.equals("draw") && askforDraw == true){
             System.out.println("Draw");
+            acceptDraw = true;
             System.exit(0);
             askforDraw = false;
         }

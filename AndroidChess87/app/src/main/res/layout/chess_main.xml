@@ -736,7 +736,8 @@
                 android:layout_column="6"
                 android:background="@color/black"
                 android:text="@string/ai"
-                android:textSize="8dp"/>
+                android:textSize="8dp"
+                android:onClick="AIClick" />
 
             <Button
                 android:id="@+id/draw"
@@ -745,7 +746,8 @@
                 android:layout_column="7"
                 android:background="@color/white"
                 android:text="@string/draw"
-                android:textSize="8dp"/>
+                android:textSize="8dp"
+                android:onClick="drawClick" />
 
             <Button
                 android:id="@+id/resign"

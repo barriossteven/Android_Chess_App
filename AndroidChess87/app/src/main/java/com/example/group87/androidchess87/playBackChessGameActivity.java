@@ -48,6 +48,7 @@ public class playBackChessGameActivity extends AppCompatActivity {
     private Boolean wasJustPromoted = false;
     private Boolean firstTime = true;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -55,7 +56,9 @@ public class playBackChessGameActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         gameName = bundle.getString(PlayBackActivity.game_name);
         TextView gameNameView = (TextView)findViewById(R.id.textView2);
+
         gameNameView.setText(gameName);
+
 
 
         boardButtons = new ImageButton[8][8];
@@ -229,6 +232,16 @@ public class playBackChessGameActivity extends AppCompatActivity {
                     printBoard();
                     if(currGame.validInput)
                     {
+                        if(currGame.askforDraw){
+                            if(currGame.whiteTurn){
+                                information.setText("Black asked for draw");
+                            }else {
+                                information.setText("White asked for draw");
+                            }
+                        }
+                        else if(currGame.acceptDraw){
+                            information.setText("Accepted Draw");
+                        }
                         for (int i = 0; i < 8; i++) {
                             for (int k = 0; k < 8; k++) {
                                 undoMove.board[i][k] = undoMoveTemp.board[i][k];

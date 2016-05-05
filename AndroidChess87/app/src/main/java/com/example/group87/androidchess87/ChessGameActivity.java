@@ -55,6 +55,7 @@ public class ChessGameActivity extends AppCompatActivity {
     String tmpFile = "temp.txt";
     String FILENAME = "tempdonotshow.txt";
     Boolean firstTime = true;
+    Boolean drawClick = false;
 
 
 
@@ -253,6 +254,10 @@ public class ChessGameActivity extends AppCompatActivity {
                     }else{
                         try {
                             System.out.println("this is move: " + move);
+                            if(drawClick){
+                                move = move + " " +"draw?";
+                                drawClick = false;
+                            }
                             storeLine(move);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -308,89 +313,92 @@ public class ChessGameActivity extends AppCompatActivity {
             }
         }
     }
-    private class AiButtonClickListener implements View.OnClickListener {
-        public void onClick(View view) {
-            Random rand = new Random();
-            do{
-                int n = rand.nextInt(8);
-                String curr = "";
-                switch (n) {
-                    case 0:
-                        curr = "a" + rand.nextInt(8);
-                        break;
-                    case 1:
-                        curr = "b" + rand.nextInt(8);
-                        break;
-                    case 2:
-                        curr = "c" + rand.nextInt(8);
-                        break;
-                    case 3:
-                        curr = "d" + rand.nextInt(8);
-                        break;
-                    case 4:
-                        curr = "e" + rand.nextInt(8);
-                        break;
-                    case 5:
-                        curr = "f" + rand.nextInt(8);
-                        break;
-                    case 6:
-                        curr = "g" + rand.nextInt(8);
-                        break;
-                    case 7:
-                        curr = "h" + rand.nextInt(8);
-                        break;
-                }
 
-                n = rand.nextInt(8);
-                String dest = "";
-                switch (n) {
-                    case 0:
-                        dest = "a" + rand.nextInt(8);
-                        break;
-                    case 1:
-                        dest = "b" + rand.nextInt(8);
-                        break;
-                    case 2:
-                        dest = "c" + rand.nextInt(8);
-                        break;
-                    case 3:
-                        dest = "d" + rand.nextInt(8);
-                        break;
-                    case 4:
-                        dest = "e" + rand.nextInt(8);
-                        break;
-                    case 5:
-                        dest = "f" + rand.nextInt(8);
-                        break;
-                    case 6:
-                        dest = "g" + rand.nextInt(8);
-                        break;
-                    case 7:
-                        dest = "h" + rand.nextInt(8);
-                        break;
-                }
-                String move = curr + " " + dest;
-                storeUndo();
-                currGame.readInput(move);
-            }while(!currGame.validInput);
-            for (int i = 0; i < 8; i++) {
-                for (int k = 0; k < 8; k++) {
-                    undoMove.board[i][k] = undoMoveTemp.board[i][k];
-                }
+    public void AIClick(View view) {
+        Random rand = new Random();
+        do{
+            int n = rand.nextInt(8);
+            String curr = "";
+            switch (n) {
+                case 0:
+                    curr = "a" + rand.nextInt(8);
+                    break;
+                case 1:
+                    curr = "b" + rand.nextInt(8);
+                    break;
+                case 2:
+                    curr = "c" + rand.nextInt(8);
+                    break;
+                case 3:
+                    curr = "d" + rand.nextInt(8);
+                    break;
+                case 4:
+                    curr = "e" + rand.nextInt(8);
+                    break;
+                case 5:
+                    curr = "f" + rand.nextInt(8);
+                    break;
+                case 6:
+                    curr = "g" + rand.nextInt(8);
+                    break;
+                case 7:
+                    curr = "h" + rand.nextInt(8);
+                    break;
             }
-            canUndo = true;
-            information.setText("AI move");
 
-            printBoard();
+            n = rand.nextInt(8);
+            String dest = "";
+            switch (n) {
+                case 0:
+                    dest = "a" + rand.nextInt(8);
+                    break;
+                case 1:
+                    dest = "b" + rand.nextInt(8);
+                    break;
+                case 2:
+                    dest = "c" + rand.nextInt(8);
+                    break;
+                case 3:
+                    dest = "d" + rand.nextInt(8);
+                    break;
+                case 4:
+                    dest = "e" + rand.nextInt(8);
+                    break;
+                case 5:
+                    dest = "f" + rand.nextInt(8);
+                    break;
+                case 6:
+                    dest = "g" + rand.nextInt(8);
+                    break;
+                case 7:
+                    dest = "h" + rand.nextInt(8);
+                    break;
+            }
+            String move = curr + " " + dest;
+            storeUndo();
+            currGame.readInput(move);
+        }while(!currGame.validInput);
+        for (int i = 0; i < 8; i++) {
+            for (int k = 0; k < 8; k++) {
+                undoMove.board[i][k] = undoMoveTemp.board[i][k];
+            }
         }
+        canUndo = true;
+        information.setText("AI move");
+
+        printBoard();
     }
-    private class DrawButtonClickListener implements View.OnClickListener {
-        public void onClick(View view) {
+
+
+        public void drawClick(View view) {
             if(!drawRequest) {
                 if(currGame.whiteTurn) {
                     information.setText("White offers draw");
+                    drawClick = true;
+
                 } else {
                     information.setText("Black offers draw");
+                    drawClick = true;
                 }
                 drawRequest = true;
             }
@@ -398,14 +406,61 @@ public class ChessGameActivity extends AppCompatActivity {
 
                 if(currGame.whiteTurn) {
                     information.setText("White accepts draw");
+                    try {
+                        storeLine("draw");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    recordButton.setEnabled(true);
                 } else {
                     information.setText("Black accepts draw");
+                    try {
+                        storeLine("draw");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    recordButton.setEnabled(true);
                 }
                 drawRequest = false;
                 currGame.gameIsActive = false;
             }
         }
-    }
+
+    /*private class DrawButtonClickListener implements View.OnClickListener {
+        public void onClick(View view) {
+            if(!drawRequest) {
+                if(currGame.whiteTurn) {
+                    information.setText("White offers draw");
+                    drawClick = true;
+
+                } else {
+                    information.setText("Black offers draw");
+                    drawClick = true;
+                }
+                drawRequest = true;
+            }
+            else {
+
+                if(currGame.whiteTurn) {
+                    information.setText("White accepts draw");
+                    try {
+                        storeLine("draw");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    information.setText("Black accepts draw");
+                    try {
+                        storeLine("draw");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                drawRequest = false;
+                currGame.gameIsActive = false;
+            }
+        }
+    }*/
    /*private class ResignButtonClickListener implements View.OnClickListener {
         public void onClick(View view) {
             currGame.readInput("resign");
